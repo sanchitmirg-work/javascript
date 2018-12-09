@@ -12,3 +12,13 @@
 <b>2009:</b> ES5 was released with lots of new features.
 
 <b>2015:</b> ES6/ES2015 was released: <b>the biggest update to the language ever!</b>
+
+<hr></hr>
+
+<b>ES6+ features</b>:
+
+<ul>
+  <li>Asynchronous JS</li>
+  <li>AJAX and API calls</li>
+  <li>Modern dev setup(webpack and Babel)</li>
+</ul>
