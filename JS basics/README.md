@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h3>History of Javascript(JS)</h3>
 
 <b>1996:</b> Changed from LiveScript to JavaScript to attract Java developers. <i>JS has almost nothing to do with Java.</i>
