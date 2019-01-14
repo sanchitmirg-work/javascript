@@ -8,3 +8,71 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
+
+var scores, roundScore, activePlayer;
+
+scores = [0, 0];
+roundScore = 0;
+activePlayer = 0;
+
+document.querySelector('.dice').style.display = 'none';
+
+document.getElementById('score-0').textContent = '0';
+document.getElementById('score-1').textContent = '0';
+document.getElementById('current-0').textContent = '0';
+document.getElementById('current-1').textContent = '0';
+
+document.querySelector('.btn-roll').addEventListener('click', function () {
+    //Do something here
+    //1. Get a Random Number
+    var dice = Math.floor((Math.random() * 6)) + 1;
+
+    //2. Display the result
+    var diceDom = document.querySelector('.dice');
+    diceDom.style.display = 'block';
+    diceDom.src = 'dice-' + dice + '.png';
+
+
+    //3. Update the round score only if the rolled number is not 
+
+    if (dice > 1) {
+        //add score
+        roundScore += dice;
+        document.querySelector('#current-' + activePlayer).textContent = roundScore;
+    } else {
+        //next player 
+        nextPlayer();
+    }
+
+});
+
+document.querySelector('.btn-hold').addEventListener('click', function () {
+    //1. add current score to global score
+    scores[activePlayer] += roundScore;
+
+    //2. update the user interface
+    document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+
+    if (scores[activePlayer] >= 100) {
+        document.querySelector('#name-' + activePlayer).textContent = 'Winner';
+        document.querySelector('.dice').style.display = 'none';
+    } else {
+        nextPlayer();
+    }
+    //3. Check if player has won the game.
+})
+
+function nextPlayer() {
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    roundScore = 0;
+    document.getElementById('current-0').textContent = '0'
+    document.getElementById('current-1').textContent = '0'
+
+
+    // document.querySelector('.player-0-panel').classList.remove('active');
+    // document.querySelector('.player-0-panel').classList.add('active');
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+
+    document.querySelector('.dice').style.display = 'none';
+}
