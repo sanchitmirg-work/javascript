@@ -134,3 +134,78 @@ function interviewQuestions(job) {
 var teacherQuestion = interviewQuestions('teacher');
 
 teacherQuestion('Sanchit');
+
+
+//////////////////////////////////
+// CLOSURE
+
+function retirement(retirementAge) {
+    var a = 'Years left until retirement.';
+    return function (yearOfBirth) {
+        var age = 2016 - yearOfBirth
+        console.log((retirementAge - age) + a);
+    }
+}
+
+
+/////////////////////////////////////
+// Bind, call and apply
+
+var john = {
+    name: 'John',
+    age: 26,
+    job: 'teacher',
+    presentation: function (style, timeOfDay) {
+        if (style === 'formal') {
+            console.log('Good ' + timeOfDay + 'Ladies and Gentlemen! I\'m' + this.name)
+        } else if (style === 'friendly') {
+            console.log()
+        }
+    }
+}
+
+var emily = {
+    name: 'Sanchit',
+    age: '26',
+    job: 'Designer'
+}
+
+//first argument is the this variable, then the argument that presentation function takes,
+//this is called method borrowing.
+john.presentation.call(emily, 'formal', 'morning')
+
+//this is not gonna work as the function doesn't accept array.
+// john.presentation.apply(emily, ['formal','afternoon'])
+
+//bind is similar to call , but bind don't immediately call the function 
+//it generates the copy of function with preset argument
+
+var johnFriendly = john.presentation.bind(john, 'friendly');
+
+johnFriendly('morning')
+
+
+//example of using Bind function
+var years = [1990, 1965, 1937, 2005, 1998];
+
+function arrayCalc(arr, fn) {
+    var arrRes = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        arrRes.push(fn(arr[i]))
+    }
+
+    return arrRes;
+}
+
+function calculateAge(year) {
+    return (2019 - year);
+}
+
+function isFullAge(limit, el) {
+    return el >= limit
+};
+
+//
+
+var fullJapan = arrayCalc(years, isFullAge.bind(this, 20));
