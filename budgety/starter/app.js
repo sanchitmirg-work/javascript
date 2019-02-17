@@ -101,6 +101,20 @@ var budgetController = (function () {
             return newItem;
         },
 
+        deleteItem: function (type, id) {
+            var ids = data.allItems[type].map(function (current) {
+                return current.id;
+            });
+
+            index = ids.indexOf(id);
+
+            if (index !== -1) {
+                data.allItems[type].splice(index, 1);
+            }
+
+
+        },
+
         calculateBudget: function () {
 
             //calculate total income and expenses
@@ -146,7 +160,8 @@ var UIController = (function () {
         budgetLabel: '.budget__value',
         incomeLabel: '.budget__income--value',
         expenseLabel: '.budget__expenses--value',
-        percentageLabel: '.budget__expenses--percentage'
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
     }
 
     return {
@@ -182,6 +197,11 @@ var UIController = (function () {
             // insert html to DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 
+        },
+
+        deleteListItem: function (id) {
+            var el = document.getElementById('id')
+            el.parentNode.removeChild(el)
         },
 
         clearFields: function () {
@@ -233,7 +253,9 @@ var controller = (function (budgetCtrl, UICtrl) {
             if (event.keyCode === 13 || event.which === 13) {
                 ctrlAddItem();
             }
-        })
+        });
+
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
     }
 
     var updateBudget = function () {
@@ -266,10 +288,36 @@ var controller = (function (budgetCtrl, UICtrl) {
             // 5. Display the budget on UI.
         }
 
+    };
+
+    var ctrlDeleteItem = function (event) {
+        var itemID, splitID, type, ID;
+
+        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        if (itemID) {
+            splitID = itemID.split('-');
+            type = splitID[0];
+            ID = parseInt(splitID[1]);
+
+            //Delete the item from the datastructure
+            budgetCtrl.deleteItem(type, ID)
+
+            //delete the item the User Interface
+            UICtrl.deleteListItem(itemID)
+            //update and display the new budget.
+            updateBudget();
+        }
     }
 
     return {
         init: function () {
+            UICtrl.displayBudget({
+                budget: 0,
+                totalInc: 0,
+                totalExp: 0,
+                percentage: -1
+            });
             setupEventListeners();
         }
     }
